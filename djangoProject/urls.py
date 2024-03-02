@@ -24,6 +24,7 @@ router = routers.DefaultRouter()
 router.register(r'students', views.StudentViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'lessons', views.LessonViewSet)
+router.register(r'lessons-by-product', views.LessonByProductViewSet, basename='LessonViewSet')
 router.register(r'products', views.ProductViewSet)
 router.register(r'request-product', views.RegistrationRequestViewSet)
 

@@ -1,6 +1,6 @@
 from django.db.migrations import serializer
 from django.shortcuts import render
-from rest_framework import permissions, viewsets, status
+from rest_framework import permissions, viewsets
 
 from .models import Group, Student, Lesson, Product, RegistrationRequest
 from .serializers import GroupSerializer, StudentSerializer, \
@@ -39,6 +39,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         'list': ProductForCustomerSerializer,
         'get': ProductForCustomerSerializer,
     }
+
     default_serializer_class = ProductSerializer
 
     def get_serializer_class(self):
@@ -53,3 +54,17 @@ class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
 
+
+class LessonByProductViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows to filter lessons by product
+    """
+    serializer_class = LessonSerializer
+
+    def get_queryset(self):
+        queryset = Lesson.objects.all()
+        product = self.request.query_params.get('product')
+        if product is not None:
+            queryset = queryset.filter(product=product)
+
+        return queryset
